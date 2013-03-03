@@ -349,10 +349,10 @@ typedef std::list<VendorItemCount> VendorItemCounts;
 
 struct TrainerSpell
 {
-    TrainerSpell() : spell(0), spellCost(0), reqSkill(0), reqSkillValue(0), reqLevel(0), isProvidedReqLevel(false) {}
+    TrainerSpell() : spell(0), spellCost(0), reqSkill(0), reqSkillValue(0), reqLevel(0), isProvidedReqLevel(false), learnedSpell(0) {}
 
-    TrainerSpell(uint32 _spell, uint32 _spellCost, uint32 _reqSkill, uint32 _reqSkillValue, uint32 _reqLevel, bool _isProvidedReqLevel)
-        : spell(_spell), spellCost(_spellCost), reqSkill(_reqSkill), reqSkillValue(_reqSkillValue), reqLevel(_reqLevel), isProvidedReqLevel(_isProvidedReqLevel)
+    TrainerSpell(uint32 _spell, uint32 _spellCost, uint32 _reqSkill, uint32 _reqSkillValue, uint32 _reqLevel, bool _isProvidedReqLevel), uint32 _learnedspell)
+        : spell(_spell), spellCost(_spellCost), reqSkill(_reqSkill), reqSkillValue(_reqSkillValue), reqLevel(_reqLevel), isProvidedReqLevel(_isProvidedReqLevel), learnedSpell(_learnedspell)
     {}
 
     uint32 spell;
@@ -361,6 +361,10 @@ struct TrainerSpell
     uint32 reqSkillValue;
     uint32 reqLevel;
     bool isProvidedReqLevel;
+    uint32 learnedSpell;
+
+    // helpers
+    bool IsCastable() const { return learnedSpell != spell; }
 };
 
 typedef UNORDERED_MAP < uint32 /*spellid*/, TrainerSpell > TrainerSpellMap;

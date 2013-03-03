@@ -355,7 +355,7 @@ void WorldSession::HandleCastSpellOpcode(WorldPacket& recvPacket)
     // client provided targets
     SpellCastTargets targets;
 
-    recvPacket >> targets.ReadForCaster(_player);
+    recvPacket >> targets.ReadForCaster(mover);
 
     // auto-selection buff level base at target level (in spellInfo)
     if (Unit* target = targets.getUnitTarget())
@@ -365,7 +365,7 @@ void WorldSession::HandleCastSpellOpcode(WorldPacket& recvPacket)
             spellInfo = actualSpellInfo;
     }
 
-    Spell* spell = new Spell(_player, spellInfo, false);
+    Spell* spell = new Spell(mover, spellInfo, false);
     spell->prepare(&targets);
 }
 

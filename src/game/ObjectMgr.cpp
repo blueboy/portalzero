@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2005-2013 MaNGOS <http://getmangos.com/>
- * Copyright (C) 2009-2013 MaNGOSZero <https:// github.com/mangos/zero>
+ * Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -6699,9 +6699,9 @@ const char* ObjectMgr::GetMangosString(int32 entry, int locale_idx) const
     else if (entry > 0)
         sLog.outErrorDb("Entry %i not found in `mangos_string` table.", entry);
     else if (entry > MAX_CREATURE_AI_TEXT_STRING_ID)
-        sLog.outErrorDb("Entry %i not found in `creature_ai_texts` table.", entry);
+        sLog.outErrorEventAI("Entry %i not found in `creature_ai_texts` table.", entry);
     else
-        sLog.outErrorDb("Mangos string entry %i not found in DB.", entry);
+        sLog.outErrorScriptLib("String entry %i not found in Database.", entry);
     return "<error>";
 }
 
@@ -6768,14 +6768,16 @@ char const* conditionSourceToStr[] =
     "gossip menu option",
     "event AI",
     "hardcoded",
-    "vendor's item check"
+    "vendor's item check",
+    "spell_area check",
+    "DBScript engine"
 };
 
 // Checks if player meets the condition
 bool PlayerCondition::Meets(Player const* player, Map const* map, WorldObject const* source, ConditionSource conditionSourceType) const
 {
     DEBUG_LOG("Condition-System: Check condition %u, type %i - called from %s with params plr: %s, map %i, src %s",
-                                    m_entry, m_condition, conditionSourceToStr[conditionSourceType], player ? player->GetGuidStr().c_str() : "<NULL>", map ? map->GetId() : -1, source ? source->GetGuidStr().c_str() : "<NULL>");
+              m_entry, m_condition, conditionSourceToStr[conditionSourceType], player ? player->GetGuidStr().c_str() : "<NULL>", map ? map->GetId() : -1, source ? source->GetGuidStr().c_str() : "<NULL>");
 
     if (!CheckParamRequirements(player, map, source, conditionSourceType))
         return false;
@@ -6882,6 +6884,7 @@ bool PlayerCondition::Meets(Player const* player, Map const* map, WorldObject co
         case CONDITION_RESERVED_1:
         case CONDITION_RESERVED_2:
         case CONDITION_RESERVED_3:
+        case CONDITION_RESERVED_4:
             return false;
         case CONDITION_QUEST_NONE:
         {
@@ -6988,6 +6991,39 @@ bool PlayerCondition::Meets(Player const* player, Map const* map, WorldObject co
             }
             return false;
         }
+        case CONDITION_GENDER:
+            return player->getGender() == m_value1;
+        case CONDITION_DEAD_OR_AWAY:
+            switch (m_value1)
+            {
+                case 0:                                     // Player dead or out of range
+                    return !player || !player->isAlive() || (m_value2 && source && !source->IsWithinDistInMap(player, m_value2));
+                case 1:                                     // All players in Group dead or out of range
+                    if (!player)
+                        return true;
+                    if (Group const* grp = player->GetGroup())
+                    {
+                        for (GroupReference const* itr = grp->GetFirstMember(); itr != NULL; itr = itr->next())
+                        {
+                            Player const* pl = itr->getSource();
+                            if (pl && pl->isAlive() && !pl->isGameMaster() && (!m_value2 || !source || source->IsWithinDistInMap(pl, m_value2)))
+                                return false;
+                        }
+                        return true;
+                    }
+                    else
+                        return !player->isAlive() || (m_value2 && source && !source->IsWithinDistInMap(player, m_value2));
+                case 2:                                     // All players in instance dead or out of range
+                    for (Map::PlayerList::const_iterator itr = map->GetPlayers().begin(); itr != map->GetPlayers().end(); ++itr)
+                    {
+                        Player const* plr = itr->getSource();
+                        if (plr && plr->isAlive() && !plr->isGameMaster() && (!m_value2 || !source || source->IsWithinDistInMap(plr, m_value2)))
+                            return false;
+                    }
+                    return true;
+                case 3:                                     // Creature source is dead
+                    return !source || source->GetTypeId() != TYPEID_UNIT || !((Unit*)source)->isAlive();
+            }
         default:
             return false;
     }
@@ -7012,7 +7048,7 @@ bool PlayerCondition::CheckParamRequirements(Player const* pPlayer, Map const* m
             if (!pPlayer && !source)
             {
                 sLog.outErrorDb("CONDITION %u type %u used with bad parameters, called from %s, used with plr: %s, map %i, src %s",
-                                    m_entry, m_condition, conditionSourceToStr[conditionSourceType], pPlayer ? pPlayer->GetGuidStr().c_str() : "NULL", map ? map->GetId() : -1, source ? source->GetGuidStr().c_str() : "NULL");
+                                m_entry, m_condition, conditionSourceToStr[conditionSourceType], pPlayer ? pPlayer->GetGuidStr().c_str() : "NULL", map ? map->GetId() : -1, source ? source->GetGuidStr().c_str() : "NULL");
                 return false;
             }
             break;
@@ -7020,7 +7056,7 @@ bool PlayerCondition::CheckParamRequirements(Player const* pPlayer, Map const* m
             if (!pPlayer && !source && !map)
             {
                 sLog.outErrorDb("CONDITION %u type %u used with bad parameters, called from %s, used with plr: %s, map %i, src %s",
-                                    m_entry, m_condition, conditionSourceToStr[conditionSourceType], pPlayer ? pPlayer->GetGuidStr().c_str() : "NULL", map ? map->GetId() : -1, source ? source->GetGuidStr().c_str() : "NULL");
+                                m_entry, m_condition, conditionSourceToStr[conditionSourceType], pPlayer ? pPlayer->GetGuidStr().c_str() : "NULL", map ? map->GetId() : -1, source ? source->GetGuidStr().c_str() : "NULL");
                 return false;
             }
             break;
@@ -7029,15 +7065,40 @@ bool PlayerCondition::CheckParamRequirements(Player const* pPlayer, Map const* m
             if (!source)
             {
                 sLog.outErrorDb("CONDITION %u type %u used with bad parameters, called from %s, used with plr: %s, map %i, src %s",
-                                    m_entry, m_condition, conditionSourceToStr[conditionSourceType], pPlayer ? pPlayer->GetGuidStr().c_str() : "NULL", map ? map->GetId() : -1, source ? source->GetGuidStr().c_str() : "NULL");
+                                m_entry, m_condition, conditionSourceToStr[conditionSourceType], pPlayer ? pPlayer->GetGuidStr().c_str() : "NULL", map ? map->GetId() : -1, source ? source->GetGuidStr().c_str() : "NULL");
                 return false;
+            }
+            break;
+        case CONDITION_DEAD_OR_AWAY:
+            switch (m_value1)
+            {
+                case 0:                                     // Player dead or out of range
+                case 1:                                     // All players in Group dead or out of range
+                case 2:                                     // All players in instance dead or out of range
+                    if (m_value2 && !source)
+                    {
+                        sLog.outErrorDb("CONDITION_DEAD_OR_AWAY %u - called from %s without source, but source expected for range check", m_entry, conditionSourceToStr[conditionSourceType]);
+                        return false;
+                    }
+                    if (m_value1 != 2)
+                        return true;
+                    // Case 2 (Instance map only)
+                    if (!map && (pPlayer || source))
+                        map = source ? source->GetMap() : pPlayer->GetMap();
+                    if (!map || !map->Instanceable())
+                    {
+                        sLog.outErrorDb("CONDITION_DEAD_OR_AWAY %u (Player in instance case) - called from %s without map param or from non-instanceable map %i", m_entry,  conditionSourceToStr[conditionSourceType], map ? map->GetId() : -1);
+                        return false;
+                    }
+                case 3:                                     // Creature source is dead
+                    return true;
             }
             break;
         default:
             if (!pPlayer)
             {
                 sLog.outErrorDb("CONDITION %u type %u used with bad parameters, called from %s, used with plr: %s, map %i, src %s",
-                                    m_entry, m_condition, conditionSourceToStr[conditionSourceType], pPlayer ? pPlayer->GetGuidStr().c_str() : "NULL", map ? map->GetId() : -1, source ? source->GetGuidStr().c_str() : "NULL");
+                                m_entry, m_condition, conditionSourceToStr[conditionSourceType], pPlayer ? pPlayer->GetGuidStr().c_str() : "NULL", map ? map->GetId() : -1, source ? source->GetGuidStr().c_str() : "NULL");
                 return false;
             }
             break;
@@ -7309,6 +7370,7 @@ bool PlayerCondition::IsValid(uint16 entry, ConditionType condition, uint32 valu
         case CONDITION_RESERVED_1:
         case CONDITION_RESERVED_2:
         case CONDITION_RESERVED_3:
+        case CONDITION_RESERVED_4:
         {
             sLog.outErrorDb("Condition (%u) reserved for later versions, skipped", condition);
             return false;
@@ -7344,6 +7406,24 @@ bool PlayerCondition::IsValid(uint16 entry, ConditionType condition, uint32 valu
             if (value2 > 2)
             {
                 sLog.outErrorDb("Last Waypoint condition (entry %u, type %u) has an invalid value in value2. (Has %u, supported 0, 1, or 2), skipping.", entry, condition, value2);
+                return false;
+            }
+            break;
+        }
+        case CONDITION_GENDER:
+        {
+            if (value1 >= MAX_GENDER)
+            {
+                sLog.outErrorDb("Gender condition (entry %u, type %u) has an invalid value in value1. (Has %u, must be smaller than %u), skipping.", entry, condition, value1, MAX_GENDER);
+                return false;
+            }
+            break;
+        }
+        case CONDITION_DEAD_OR_AWAY:
+        {
+            if (value1 >= 4)
+            {
+                sLog.outErrorDb("Dead condition (entry %u, type %u) has an invalid value in value1. (Has %u, must be smaller than 4), skipping.", entry, condition, value1);
                 return false;
             }
             break;
@@ -7670,7 +7750,7 @@ void ObjectMgr::LoadTrainers(char const* tableName, bool isTemplates)
         trainerSpell.reqLevel      = fields[5].GetUInt32();
 
         trainerSpell.isProvidedReqLevel = trainerSpell.reqLevel > 0;
-		
+
         if (trainerSpell.reqLevel)
         {
             if (trainerSpell.reqLevel == spellinfo->spellLevel)

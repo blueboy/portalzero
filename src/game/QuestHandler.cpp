@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2005-2013 MaNGOS <http://getmangos.com/>
- * Copyright (C) 2009-2013 MaNGOSZero <https:// github.com/mangos/zero>
+ * Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -570,7 +570,7 @@ uint32 WorldSession::getDialogStatus(Player* pPlayer, Object* questgiver, uint32
                     {
                         dialogStatusNew = DIALOG_STATUS_REWARD_REP;
                     }
-                    else if (int32(pPlayer->getLevel()) <= int32(pPlayer->GetQuestLevelForPlayer(pQuest)) + sWorld.getConfig(CONFIG_INT32_QUEST_LOW_LEVEL_HIDE_DIFF))
+                    else if ((int32(pPlayer->getLevel()) <= int32(pPlayer->GetQuestLevelForPlayer(pQuest)) + sWorld.getConfig(CONFIG_INT32_QUEST_LOW_LEVEL_HIDE_DIFF)) || (sWorld.getConfig(CONFIG_INT32_QUEST_LOW_LEVEL_HIDE_DIFF) == -1))
                     {
                         dialogStatusNew = DIALOG_STATUS_AVAILABLE;
                     }

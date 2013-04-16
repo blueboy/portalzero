@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2005-2013 MaNGOS <http://getmangos.com/>
- * Copyright (C) 2009-2013 MaNGOSZero <https:// github.com/mangos/zero>
+ * Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,6 +69,8 @@ MailSender::MailSender(Object* sender, MailStationery stationery) : m_stationery
         case TYPEID_PLAYER:
             m_messageType = MAIL_NORMAL;
             m_senderId = sender->GetGUIDLow();
+            if (static_cast<Player *>(sender)->isGameMaster())
+                m_stationery = MAIL_STATIONERY_GM;
             break;
         default:
             m_messageType = MAIL_NORMAL;

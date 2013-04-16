@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `db_version`;
 CREATE TABLE `db_version` (
   `version` varchar(120) default NULL,
   `creature_ai_version` varchar(120) default NULL,
-  `required_z2268_s1900_12370_02_mangos_npc_vendor_template` bit(1) default NULL
+  `required_z2363_s1957_12440_01_mangos_spell_area` bit(1) default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Used DB version notes';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3458,7 +3458,7 @@ INSERT INTO `mangos_string` VALUES
 (545,'*** Is a vendor!',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (546,'*** Is a trainer!',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (547,'InstanceID: %u',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(548,'Player%s %s (guid: %u) Account: %s (id: %u) GMLevel: %u Last IP: %s Last login: %s Latency: %ums',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(548,'Player%s %s (guid: %u) Account: %s (id: %u) GMLevel: %u E-mail: %s Last IP: %s Last login: %s Latency: %ums',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (549,'Played time: %s Level: %u Money: %ug%us%uc',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (550,'Command .pinfo doesn\'t support \'rep\' option for offline players.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (551,'%s has explored all zones now.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -10150,6 +10150,7 @@ CREATE TABLE `spell_area` (
   `quest_start` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `quest_start_active` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `quest_end` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `condition_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `aura_spell` mediumint(8) NOT NULL DEFAULT '0',
   `racemask` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `gender` tinyint(1) unsigned NOT NULL DEFAULT '2',
@@ -12948,6 +12949,7 @@ INSERT INTO `spell_proc_event` VALUES
 (22618, 0x00,  0, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x00000000, 0x00000040, 0.000000, 0.000000,  0),
 (22620, 0x00,  0, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x00000000, 0x00000040, 0.000000, 0.000000,  0),
 (22648, 0x00,  0, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x00000000, 0x00000002, 0.000000, 0.000000,  0),
+(23401, 0x00,  6, 0x0000000000041e00, 0x0000000000000000, 0x0000000000000000, 0x00004000, 0x00000000, 0.000000, 0.000000,  0),
 (23547, 0x00,  0, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x00000000, 0x00000020, 0.000000, 0.000000,  0),
 (23548, 0x00,  0, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x00000000, 0x00000040, 0.000000, 0.000000,  0),
 (23551, 0x00,  0, 0x00000000000000C0, 0x00000000000000C0, 0x00000000000000C0, 0x00000000, 0x00000000, 0.000000, 0.000000,  0),

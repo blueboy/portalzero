@@ -1,5 +1,6 @@
-/*
+/**
  * Copyright (C) 2005-2013 MaNGOS <http://getmangos.com/>
+ * Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +58,6 @@ namespace Movement
     };
 
 ///////////
-    #pragma region evaluation methtods
 
     using G3D::Matrix4;
     static const Matrix4 s_catmullRomCoeffs(
@@ -200,7 +200,6 @@ namespace Movement
         }
         return length;
     }
-    #pragma endregion
 
     void SplineBase::init_spline(const Vector3* controls, index_type count, EvaluationMode m)
     {

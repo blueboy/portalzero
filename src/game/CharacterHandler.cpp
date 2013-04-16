@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2005-2013 MaNGOS <http://getmangos.com/>
- * Copyright (C) 2009-2013 MaNGOSZero <https:// github.com/mangos/zero>
+ * Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -601,13 +601,24 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
             pCurrChar->SendCinematicStart(rEntry->CinematicSequence);
     }
 
-    if (!pCurrChar->GetMap()->Add(pCurrChar))
+    uint32 miscRequirement = 0;
+    AreaLockStatus lockStatus = AREA_LOCKSTATUS_OK;
+    if (AreaTrigger const* at = sObjectMgr.GetMapEntranceTrigger(pCurrChar->GetMapId()))
+        lockStatus = pCurrChar->GetAreaTriggerLockStatus(at, miscRequirement);
+    else
+    {
+        // Some basic checks in case of a map without areatrigger
+        MapEntry const* mapEntry = sMapStore.LookupEntry(pCurrChar->GetMapId());
+        if (!mapEntry)
+            lockStatus = AREA_LOCKSTATUS_UNKNOWN_ERROR;
+    }
+    if (lockStatus != AREA_LOCKSTATUS_OK || !pCurrChar->GetMap()->Add(pCurrChar))
     {
         // normal delayed teleport protection not applied (and this correct) for this case (Player object just created)
         AreaTrigger const* at = sObjectMgr.GetGoBackTrigger(pCurrChar->GetMapId());
         if (at)
-            pCurrChar->TeleportTo(at->target_mapId, at->target_X, at->target_Y, at->target_Z, pCurrChar->GetOrientation());
-        else
+            lockStatus = pCurrChar->GetAreaTriggerLockStatus(at, miscRequirement);
+        if (!at || lockStatus != AREA_LOCKSTATUS_OK || !pCurrChar->TeleportTo(at->target_mapId, at->target_X, at->target_Y, at->target_Z, pCurrChar->GetOrientation()))
             pCurrChar->TeleportToHomebind();
     }
 

@@ -1,5 +1,5 @@
 # Copyright (C) 2005-2011 MaNGOS <http://getmangos.com/>
-# Copyright (C) 2009-2011 MaNGOSZero <https://github.com/mangos/zero>
+# Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,9 +25,10 @@ if(WIN32)
   )
 endif()
 
-add_subdirectory(bindings)
 add_subdirectory(framework)
 add_subdirectory(shared)
 add_subdirectory(realmd)
 add_subdirectory(game)
 add_subdirectory(mangosd)
+add_subdirectory(bindings)
+

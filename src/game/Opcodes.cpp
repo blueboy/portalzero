@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2005-2013 MaNGOS <http://getmangos.com/>
- * Copyright (C) 2009-2013 MaNGOSZero <https:// github.com/mangos/zero>
+ * Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -701,14 +701,14 @@ void Opcodes::BuildOpcodeList()
     /*0x289*/  StoreOpcode(CMSG_ADD_PVP_MEDAL_CHEAT,          "CMSG_ADD_PVP_MEDAL_CHEAT",         STATUS_NEVER,     PROCESS_INPLACE,      &WorldSession::Handle_NULL);
     /*0x28A*/  StoreOpcode(CMSG_DEL_PVP_MEDAL_CHEAT,          "CMSG_DEL_PVP_MEDAL_CHEAT",         STATUS_NEVER,     PROCESS_INPLACE,      &WorldSession::Handle_NULL);
     /*0x28B*/  StoreOpcode(CMSG_SET_PVP_TITLE,                "CMSG_SET_PVP_TITLE",               STATUS_NEVER,     PROCESS_INPLACE,      &WorldSession::Handle_NULL);
-    /*[-ZERO] Need check /*0x28C*/  StoreOpcode(SMSG_PVP_CREDIT,                   "SMSG_PVP_CREDIT",                  STATUS_NEVER,     PROCESS_INPLACE,      &WorldSession::Handle_ServerSide);
+    /*0x28C*/  StoreOpcode(SMSG_PVP_CREDIT,                   "SMSG_PVP_CREDIT",                  STATUS_NEVER,     PROCESS_INPLACE,      &WorldSession::Handle_ServerSide);
     /*[-ZERO] Need check /*0x28D*/  StoreOpcode(SMSG_AUCTION_REMOVED_NOTIFICATION, "SMSG_AUCTION_REMOVED_NOTIFICATION", STATUS_NEVER,     PROCESS_INPLACE,      &WorldSession::Handle_ServerSide);
     /*0x28E*/  StoreOpcode(CMSG_GROUP_RAID_CONVERT,           "CMSG_GROUP_RAID_CONVERT",          STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleGroupRaidConvertOpcode);
     /*[-ZERO] Need check /*0x28F*/  StoreOpcode(CMSG_GROUP_ASSISTANT_LEADER,       "CMSG_GROUP_ASSISTANT_LEADER",      STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleGroupAssistantLeaderOpcode);
     /*0x290*/  StoreOpcode(CMSG_BUYBACK_ITEM,                 "CMSG_BUYBACK_ITEM",                STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleBuybackItem);
     /*[-ZERO] Need check /*0x291*/  StoreOpcode(SMSG_SERVER_MESSAGE,               "SMSG_SERVER_MESSAGE",              STATUS_NEVER,     PROCESS_INPLACE,      &WorldSession::Handle_ServerSide);
     /*0x292*/  StoreOpcode(CMSG_MEETINGSTONE_JOIN,            "CMSG_MEETINGSTONE_JOIN",           STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleMeetingStoneJoinOpcode);
-    /*0x293*/  StoreOpcode(CMSG_MEETINGSTONE_LEAVE,           "CMSG_MEETINGSTONE_LEAVE",          STATUS_NEVER,     PROCESS_INPLACE,      &WorldSession::Handle_NULL);
+    /*0x293*/  StoreOpcode(CMSG_MEETINGSTONE_LEAVE,           "CMSG_MEETINGSTONE_LEAVE",          STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleMeetingStoneLeaveOpcode);
     /*0x294*/  StoreOpcode(CMSG_MEETINGSTONE_CHEAT,           "CMSG_MEETINGSTONE_CHEAT",          STATUS_NEVER,     PROCESS_INPLACE,      &WorldSession::Handle_NULL);
     /*[-ZERO] Need check /*0x295*/  StoreOpcode(SMSG_MEETINGSTONE_SETQUEUE,        "SMSG_MEETINGSTONE_SETQUEUE",       STATUS_NEVER,     PROCESS_INPLACE,      &WorldSession::Handle_ServerSide);
     /*[-ZERO] Need check /*0x296*/  StoreOpcode(CMSG_MEETINGSTONE_INFO,            "CMSG_MEETINGSTONE_INFO",           STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, &WorldSession::HandleMeetingStoneInfoOpcode);

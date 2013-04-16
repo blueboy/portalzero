@@ -1,5 +1,5 @@
 # Copyright (C) 2005-2011 MaNGOS <http://getmangos.com/>
-# Copyright (C) 2009-2011 MaNGOSZero <https://github.com/mangos/zero>
+# Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,12 +16,28 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 set(EXECUTABLE_NAME mangosd)
-file(GLOB_RECURSE EXECUTABLE_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.h)
+
+set(EXECUTABLE_SRCS
+    CliRunnable.cpp
+    CliRunnable.h
+    MaNGOSsoap.cpp
+    MaNGOSsoap.h
+    Main.cpp
+    Master.cpp
+    Master.h
+    RASocket.cpp
+    RASocket.h
+    WorldRunnable.cpp
+    WorldRunnable.h
+    soapC.cpp
+    soapH.h
+    soapServer.cpp
+    soapStub.h
+   )
 
 if(WIN32)
-  list(APPEND EXECUTABLE_SRCS
-    mangosd.rc
-  )
+  # add resource file to windows build
+  set(EXECUTABLE_SRCS ${EXECUTABLE_SRCS} mangosd.rc)
 endif()
 
 include_directories(

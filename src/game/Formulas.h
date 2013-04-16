@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2005-2013 MaNGOS <http://getmangos.com/>
- * Copyright (C) 2009-2013 MaNGOSZero <https:// github.com/mangos/zero>
+ * Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -246,10 +246,8 @@ namespace MaNGOS
                 return 0;
             else if (pl_level <= 39)
                 return pl_level - 5 - pl_level / 10;
-            else if (pl_level <= 59)
-                return pl_level - 1 - pl_level / 5;
             else
-                return pl_level - 9;
+                return pl_level - 1 - pl_level / 5;
         }
 
         inline XPColorChar GetColorCode(uint32 pl_level, uint32 mob_level)

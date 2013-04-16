@@ -1,5 +1,5 @@
 # Copyright (C) 2005-2011 MaNGOS <http://getmangos.com/>
-# Copyright (C) 2009-2011 MaNGOSZero <https://github.com/mangos/zero>
+# Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,9 +15,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-# file(GLOB g3dlite_SRCS *.cpp) # don't need all of them
+set(LIBRARY_NAME g3dlite)
 
-set(g3dlite_SRCS
+set(LIBRARY_SRCS
     AABox.cpp
     Any.cpp
     #AnyVal.cpp
@@ -125,12 +125,12 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/dep/include/zlib
 )
 
-add_library(g3dlite STATIC
-  ${g3dlite_SRCS}
+add_library(${LIBRARY_NAME} STATIC
+  ${LIBRARY_SRCS}
 )
 
 if(WIN32)
-  target_link_libraries(g3dlite
+  target_link_libraries(${LIBRARY_NAME}
     zlib
   )
 endif()

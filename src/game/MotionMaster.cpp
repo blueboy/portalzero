@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2005-2013 MaNGOS <http://getmangos.com/>
- * Copyright (C) 2009-2013 MaNGOSZero <https:// github.com/mangos/zero>
+ * Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -421,6 +421,15 @@ void MotionMaster::MoveDistract(uint32 timer)
     DEBUG_FILTER_LOG(LOG_FILTER_AI_AND_MOVEGENSS, "%s distracted (timer: %u)", m_owner->GetGuidStr().c_str(), timer);
     DistractMovementGenerator* mgen = new DistractMovementGenerator(timer);
     Mutate(mgen);
+}
+
+void MotionMaster::MoveFlyOrLand(uint32 id, float x, float y, float z, bool liftOff)
+{
+    if (m_owner->GetTypeId() != TYPEID_UNIT)
+        return;
+
+    DEBUG_FILTER_LOG(LOG_FILTER_AI_AND_MOVEGENSS, "%s targeted point for %s (Id: %u X: %f Y: %f Z: %f)", m_owner->GetGuidStr().c_str(), liftOff ? "liftoff" : "landing", id, x, y, z);
+    Mutate(new FlyOrLandMovementGenerator(id, x, y, z, liftOff));
 }
 
 void MotionMaster::Mutate(MovementGenerator* m)

@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2005-2013 MaNGOS <http://getmangos.com/>
- * Copyright (C) 2009-2013 MaNGOSZero <https:// github.com/mangos/zero>
+ * Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -284,6 +284,7 @@ void AuthSocket::SendProof(Sha1Hash sha)
     {
         case 5875:                                          // 1.12.1
         case 6005:                                          // 1.12.2
+        case 6141:                                          // 1.12.3
         {
             sAuthLogonProof_S_BUILD_6005 proof;
             memcpy(proof.M2, sha.GetDigest(), 20);
@@ -895,6 +896,7 @@ void AuthSocket::LoadRealmlist(ByteBuffer& pkt, uint32 acctid)
     {
         case 5875:                                          // 1.12.1
         case 6005:                                          // 1.12.2
+        case 6141:                                          // 1.12.3
         {
             pkt << uint32(0);                               // unused value
             pkt << uint8(sRealmList.size());

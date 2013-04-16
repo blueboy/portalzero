@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2005-2013 MaNGOS <http://getmangos.com/>
- * Copyright (C) 2009-2013 MaNGOSZero <https:// github.com/mangos/zero>
+ * Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
 #  define PLATFORM PLATFORM_WINDOWS
 #elif defined( __WIN32__ ) || defined( WIN32 ) || defined( _WIN32 )
 #  define PLATFORM PLATFORM_WINDOWS
+#  define WIN_X86
 #elif defined( __APPLE_CC__ )
 #  define PLATFORM PLATFORM_APPLE
 #elif defined( __INTEL_COMPILER )

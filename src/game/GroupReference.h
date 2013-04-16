@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2005-2013 MaNGOS <http://getmangos.com/>
- * Copyright (C) 2009-2013 MaNGOSZero <https:// github.com/mangos/zero>
+ * Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@ class MANGOS_DLL_SPEC GroupReference : public Reference<Group, Player>
         GroupReference() : Reference<Group, Player>(), iSubGroup(0) {}
         ~GroupReference() { unlink(); }
         GroupReference* next() { return (GroupReference*)Reference<Group, Player>::next(); }
+        GroupReference const* next() const { return (GroupReference const*)Reference<Group, Player>::next(); }
         uint8 getSubGroup() const { return iSubGroup; }
         void setSubGroup(uint8 pSubGroup) { iSubGroup = pSubGroup; }
 };

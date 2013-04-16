@@ -1,5 +1,5 @@
 # Copyright (C) 2005-2011 MaNGOS <http://getmangos.com/>
-# Copyright (C) 2009-2011 MaNGOSZero <https://github.com/mangos/zero>
+# Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,15 +14,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#
 
 set(EXECUTABLE_NAME realmd)
-file(GLOB_RECURSE EXECUTABLE_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.h)
+
+set(EXECUTABLE_SRCS
+    AuthCodes.h
+    AuthSocket.cpp
+    AuthSocket.h
+    BufferedSocket.cpp
+    BufferedSocket.h
+    Main.cpp
+    PatchHandler.cpp
+    PatchHandler.h
+    RealmList.cpp
+    RealmList.h
+   )
 
 if(WIN32)
-  list(APPEND EXECUTABLE_SRCS
-    realmd.rc
-  )
+  # add resource file to windows build
+  set(EXECUTABLE_SRCS ${EXECUTABLE_SRCS} realmd.rc)
 endif()
 
 include_directories(

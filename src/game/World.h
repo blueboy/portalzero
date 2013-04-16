@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2005-2013 MaNGOS <http://getmangos.com/>
- * Copyright (C) 2009-2013 MaNGOSZero <https:// github.com/mangos/zero>
+ * Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -108,6 +108,7 @@ enum eConfigUInt32Values
     CONFIG_UINT32_INSTANCE_RESET_TIME_HOUR,
     CONFIG_UINT32_INSTANCE_UNLOAD_DELAY,
     CONFIG_UINT32_MAX_SPELL_CASTS_IN_CHAIN,
+    CONFIG_UINT32_RABBIT_DAY,
     CONFIG_UINT32_MAX_PRIMARY_TRADE_SKILL,
     CONFIG_UINT32_TRADE_SKILL_GMIGNORE_MAX_PRIMARY_COUNT,
     CONFIG_UINT32_TRADE_SKILL_GMIGNORE_LEVEL,

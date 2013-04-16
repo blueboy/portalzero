@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2005-2013 MaNGOS <http://getmangos.com/>
- * Copyright (C) 2009-2013 MaNGOSZero <https:// github.com/mangos/zero>
+ * Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1279,7 +1279,7 @@ class MANGOS_DLL_SPEC Player : public Unit
 
         void SetBindPoint(ObjectGuid guid);
         void SendTalentWipeConfirm(ObjectGuid guid);
-        void RewardRage(uint32 damage, uint32 weaponSpeedHitFactor, bool attacker);
+        void RewardRage(uint32 damage, bool attacker);
         void SendPetSkillWipeConfirm();
         void CalcRage(uint32 damage, bool attacker);
         void RegenerateAll();
@@ -1700,6 +1700,7 @@ class MANGOS_DLL_SPEC Player : public Unit
         // Acessors of last week standing
         int32 GetHonorLastWeekStandingPos() const { return m_standing_pos; }
         void SetHonorLastWeekStandingPos(int32 standingPos) { m_standing_pos = standingPos; }
+        void SendPvPCredit(ObjectGuid guid, uint32 rank, uint32 points);
 
         /*********************************************************/
         /***                  PVP SYSTEM                       ***/

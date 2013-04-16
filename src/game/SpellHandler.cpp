@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2005-2013 MaNGOS <http://getmangos.com/>
- * Copyright (C) 2009-2013 MaNGOSZero <https:// github.com/mangos/zero>
+ * Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -273,32 +273,6 @@ void WorldSession::HandleGameObjectUseOpcode(WorldPacket& recv_data)
     if (obj->HasFlag(GAMEOBJECT_FLAGS, GO_FLAG_NO_INTERACT))
     {
         sLog.outError("HandleGameObjectUseOpcode: CMSG_GAMEOBJ_USE for GameObject (Entry %u) with non intractable flag (Flags %u), didn't expect this to happen.", obj->GetEntry(), obj->GetUInt32Value(GAMEOBJECT_FLAGS));
-        return;
-    }
-
-    obj->Use(_player);
-}
-
-void WorldSession::HandleMeetingStoneJoinOpcode(WorldPacket& recv_data)
-{
-    ObjectGuid guid;
-
-    recv_data >> guid;
-
-    DEBUG_LOG("WORLD: Recvd CMSG_MEETINGSTONE_JOIN Message guid: %s", guid.GetString().c_str());
-
-    // ignore for remote control state
-    if (!_player->IsSelfMover())
-        return;
-
-    GameObject* obj = GetPlayer()->GetMap()->GetGameObject(guid);
-    if (!obj)
-        return;
-
-    // Never expect this opcode for some type GO's
-    if (obj->GetGoType() != GAMEOBJECT_TYPE_MEETINGSTONE)
-    {
-        sLog.outError("HandleMeetingStoneJoinOpcode: CMSG_MEETINGSTONE_JOIN for not allowed GameObject type %u (Entry %u), didn't expect this to happen.", obj->GetGoType(), obj->GetEntry());
         return;
     }
 

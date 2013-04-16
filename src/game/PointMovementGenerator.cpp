@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2005-2013 MaNGOS <http://getmangos.com/>
- * Copyright (C) 2009-2013 MaNGOSZero <https:// github.com/mangos/zero>
+ * Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -146,4 +146,21 @@ void EffectMovementGenerator::Finalize(Unit& unit)
         else
             unit.GetMotionMaster()->Initialize();
     }
+}
+
+void FlyOrLandMovementGenerator::Initialize(Unit& unit)
+{
+    if (unit.hasUnitState(UNIT_STAT_CAN_NOT_REACT | UNIT_STAT_NOT_MOVE))
+        return;
+
+    if (!unit.IsStopped())
+        unit.StopMoving();
+
+    float x, y, z;
+    GetDestination(x, y, z);
+    unit.addUnitState(UNIT_STAT_ROAMING | UNIT_STAT_ROAMING_MOVE);
+    Movement::MoveSplineInit init(unit);
+    init.SetFly();
+    init.MoveTo(x, y, z, false);
+    init.Launch();
 }

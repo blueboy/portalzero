@@ -1,6 +1,6 @@
-/*
+/**
  * Copyright (C) 2005-2013 MaNGOS <http://getmangos.com/>
- * Copyright (C) 2009-2013 MaNGOSZero <https:// github.com/mangos/zero>
+ * Copyright (C) 2009-2013 MaNGOSZero <https://github.com/mangoszero>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -108,8 +108,12 @@ class MANGOS_DLL_SPEC CreatureAI
          */
         virtual void JustReachedHome() {}
 
-        // Called at any heal cast/item used (call non implemented)
-        // virtual void HealBy(Unit * /*healer*/, uint32 /*amount_healed*/) {}
+        /**
+         * Called at any Heal received from any Unit
+         * @param pHealer Unit* which deals the heal
+         * @param uiHealedAmount Amount of healing received
+         */
+        virtual void HealedBy(Unit * /*pHealer*/, uint32& /*uiHealedAmount*/) {}
 
         /**
          * Called at any Damage to any victim (before damage apply)
